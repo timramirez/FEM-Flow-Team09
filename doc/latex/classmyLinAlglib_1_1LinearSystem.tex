@@ -1,0 +1,124 @@
+\hypertarget{classmyLinAlglib_1_1LinearSystem}{}\section{my\+Lin\+Alglib.\+Linear\+System Class Reference}
+\label{classmyLinAlglib_1_1LinearSystem}\index{my\+Lin\+Alglib.\+Linear\+System@{my\+Lin\+Alglib.\+Linear\+System}}
+
+
+Linear system of equations.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classmyLinAlglib_1_1LinearSystem_abe0785c00795ca1bbf8539290e7287fc}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, size, zerocons)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmyLinAlglib_1_1LinearSystem_a3bc07f2b89dcb002ecce7f70a9fb0d61}\label{classmyLinAlglib_1_1LinearSystem_a3bc07f2b89dcb002ecce7f70a9fb0d61}} 
+def \mbox{\hyperlink{classmyLinAlglib_1_1LinearSystem_a3bc07f2b89dcb002ecce7f70a9fb0d61}{\+\_\+\+\_\+len\+\_\+\+\_\+}} (self)
+\begin{DoxyCompactList}\small\item\em Length function. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classmyLinAlglib_1_1LinearSystem_a5648c3ebda07e69cd72f2cdf79fb35c7}{add}} (self, vec, mat, rdofs, cdofs=None)
+\begin{DoxyCompactList}\small\item\em Add contribution to the linear system. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classmyLinAlglib_1_1LinearSystem_a2d1c1a9e2b7de477055c641169443553}{add\+\_\+to\+\_\+rhs}} (self, vec, rdofs)
+\begin{DoxyCompactList}\small\item\em Add contribution to the right-\/hand-\/side. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classmyLinAlglib_1_1LinearSystem_a43836f873d262926f7d563776d5d8198}{add\+\_\+to\+\_\+lhs}} (self, mat, rdofs, cdofs=None)
+\begin{DoxyCompactList}\small\item\em Add contribution to the left-\/hand-\/side. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classmyLinAlglib_1_1LinearSystem_a9d3b8c2ae027f245d9fd9aaaeabdffcb}{solve}} (self)
+\begin{DoxyCompactList}\small\item\em Solve the constrained linear system of equations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Linear system of equations. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classmyLinAlglib_1_1LinearSystem_abe0785c00795ca1bbf8539290e7287fc}\label{classmyLinAlglib_1_1LinearSystem_abe0785c00795ca1bbf8539290e7287fc}} 
+\index{my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def my\+Lin\+Alglib.\+Linear\+System.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{size,  }\item[{}]{zerocons }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Number of degrees of freedom \\
+\hline
+{\em zerocons} & Indices of constrained degrees of freedom \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classmyLinAlglib_1_1LinearSystem_a5648c3ebda07e69cd72f2cdf79fb35c7}\label{classmyLinAlglib_1_1LinearSystem_a5648c3ebda07e69cd72f2cdf79fb35c7}} 
+\index{my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}!add@{add}}
+\index{add@{add}!my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}}
+\subsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily def my\+Lin\+Alglib.\+Linear\+System.\+add (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{vec,  }\item[{}]{mat,  }\item[{}]{rdofs,  }\item[{}]{cdofs = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Add contribution to the linear system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vec} & Vector to be added to the right-\/hand-\/side \\
+\hline
+{\em mat} & Matrix to be added to the left-\/hand-\/side \\
+\hline
+{\em rdofs} & Row degrees of freedom to add to \\
+\hline
+{\em cdofs} & Column degrees of freedom to add to \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classmyLinAlglib_1_1LinearSystem_a43836f873d262926f7d563776d5d8198}\label{classmyLinAlglib_1_1LinearSystem_a43836f873d262926f7d563776d5d8198}} 
+\index{my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}!add\+\_\+to\+\_\+lhs@{add\+\_\+to\+\_\+lhs}}
+\index{add\+\_\+to\+\_\+lhs@{add\+\_\+to\+\_\+lhs}!my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}}
+\subsubsection{\texorpdfstring{add\+\_\+to\+\_\+lhs()}{add\_to\_lhs()}}
+{\footnotesize\ttfamily def my\+Lin\+Alglib.\+Linear\+System.\+add\+\_\+to\+\_\+lhs (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{mat,  }\item[{}]{rdofs,  }\item[{}]{cdofs = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Add contribution to the left-\/hand-\/side. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mat} & Matrix to be added to the left-\/hand-\/side \\
+\hline
+{\em rdofs} & Row degrees of freedom to add to \\
+\hline
+{\em cdofs} & Column degrees of freedom to add to \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classmyLinAlglib_1_1LinearSystem_a2d1c1a9e2b7de477055c641169443553}\label{classmyLinAlglib_1_1LinearSystem_a2d1c1a9e2b7de477055c641169443553}} 
+\index{my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}!add\+\_\+to\+\_\+rhs@{add\+\_\+to\+\_\+rhs}}
+\index{add\+\_\+to\+\_\+rhs@{add\+\_\+to\+\_\+rhs}!my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}}
+\subsubsection{\texorpdfstring{add\+\_\+to\+\_\+rhs()}{add\_to\_rhs()}}
+{\footnotesize\ttfamily def my\+Lin\+Alglib.\+Linear\+System.\+add\+\_\+to\+\_\+rhs (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{vec,  }\item[{}]{rdofs }\end{DoxyParamCaption})}
+
+
+
+Add contribution to the right-\/hand-\/side. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vec} & Vector to be added to the right-\/hand-\/side \\
+\hline
+{\em rdofs} & Row degrees of freedom to add to \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classmyLinAlglib_1_1LinearSystem_a9d3b8c2ae027f245d9fd9aaaeabdffcb}\label{classmyLinAlglib_1_1LinearSystem_a9d3b8c2ae027f245d9fd9aaaeabdffcb}} 
+\index{my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}!solve@{solve}}
+\index{solve@{solve}!my\+Lin\+Alglib\+::\+Linear\+System@{my\+Lin\+Alglib\+::\+Linear\+System}}
+\subsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily def my\+Lin\+Alglib.\+Linear\+System.\+solve (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Solve the constrained linear system of equations. 
+
+\begin{DoxyReturn}{Returns}
+Solution vector 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+my\+Lin\+Alglib.\+py\end{DoxyCompactItemize}

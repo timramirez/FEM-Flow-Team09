@@ -1,0 +1,93 @@
+\hypertarget{classmyFElib_1_1StandardTriangle}{}\section{my\+F\+Elib.\+Standard\+Triangle Class Reference}
+\label{classmyFElib_1_1StandardTriangle}\index{my\+F\+Elib.\+Standard\+Triangle@{my\+F\+Elib.\+Standard\+Triangle}}
+
+
+Finite element triangular parent element.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classmyFElib_1_1StandardTriangle_a2efe2a80fc454944ddf9eeb88b4d6c2e}\label{classmyFElib_1_1StandardTriangle_a2efe2a80fc454944ddf9eeb88b4d6c2e}} 
+def \mbox{\hyperlink{classmyFElib_1_1StandardTriangle_a2efe2a80fc454944ddf9eeb88b4d6c2e}{\+\_\+\+\_\+len\+\_\+\+\_\+}} (self)
+\begin{DoxyCompactList}\small\item\em Length function. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classmyFElib_1_1StandardTriangle_a6d6e7ed7d74740180f1b6e8a1a094d6c}\label{classmyFElib_1_1StandardTriangle_a6d6e7ed7d74740180f1b6e8a1a094d6c}} 
+def \mbox{\hyperlink{classmyFElib_1_1StandardTriangle_a6d6e7ed7d74740180f1b6e8a1a094d6c}{get\+\_\+nr\+\_\+of\+\_\+nodes}} (self)
+\begin{DoxyCompactList}\small\item\em Get the number of nodes. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classmyFElib_1_1StandardTriangle_a374be169ec06f9e1ea1ce6664275e9f6}{get\+\_\+shapes}} (self, xi)
+\begin{DoxyCompactList}\small\item\em Get the shape functions. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classmyFElib_1_1StandardTriangle_abb8220126b3749be519c838a2a8a55e8}{get\+\_\+shapes\+\_\+gradient}} (self, xi)
+\begin{DoxyCompactList}\small\item\em Get the shape functions gradient. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classmyFElib_1_1StandardTriangle_ac825bfb18ff9df609d79746ce27f7535}{get\+\_\+integration\+\_\+scheme}} (self, name, npts)
+\begin{DoxyCompactList}\small\item\em Get the integration scheme. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Finite element triangular parent element. 
+
+Linear triangle parent element with local coordinates (0,0), (1,0), (0,1) 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classmyFElib_1_1StandardTriangle_ac825bfb18ff9df609d79746ce27f7535}\label{classmyFElib_1_1StandardTriangle_ac825bfb18ff9df609d79746ce27f7535}} 
+\index{my\+F\+Elib\+::\+Standard\+Triangle@{my\+F\+Elib\+::\+Standard\+Triangle}!get\+\_\+integration\+\_\+scheme@{get\+\_\+integration\+\_\+scheme}}
+\index{get\+\_\+integration\+\_\+scheme@{get\+\_\+integration\+\_\+scheme}!my\+F\+Elib\+::\+Standard\+Triangle@{my\+F\+Elib\+::\+Standard\+Triangle}}
+\subsubsection{\texorpdfstring{get\+\_\+integration\+\_\+scheme()}{get\_integration\_scheme()}}
+{\footnotesize\ttfamily def my\+F\+Elib.\+Standard\+Triangle.\+get\+\_\+integration\+\_\+scheme (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{name,  }\item[{}]{npts }\end{DoxyParamCaption})}
+
+
+
+Get the integration scheme. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The type of integration scheme (e.\+g. \textquotesingle{}gauss\textquotesingle{}) \\
+\hline
+{\em npts} & The number of integration points \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Matrix of integration point coordinates 
+
+Vector of integration point weights 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classmyFElib_1_1StandardTriangle_a374be169ec06f9e1ea1ce6664275e9f6}\label{classmyFElib_1_1StandardTriangle_a374be169ec06f9e1ea1ce6664275e9f6}} 
+\index{my\+F\+Elib\+::\+Standard\+Triangle@{my\+F\+Elib\+::\+Standard\+Triangle}!get\+\_\+shapes@{get\+\_\+shapes}}
+\index{get\+\_\+shapes@{get\+\_\+shapes}!my\+F\+Elib\+::\+Standard\+Triangle@{my\+F\+Elib\+::\+Standard\+Triangle}}
+\subsubsection{\texorpdfstring{get\+\_\+shapes()}{get\_shapes()}}
+{\footnotesize\ttfamily def my\+F\+Elib.\+Standard\+Triangle.\+get\+\_\+shapes (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{xi }\end{DoxyParamCaption})}
+
+
+
+Get the shape functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xi} & Local coordinate vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector of shape functions 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classmyFElib_1_1StandardTriangle_abb8220126b3749be519c838a2a8a55e8}\label{classmyFElib_1_1StandardTriangle_abb8220126b3749be519c838a2a8a55e8}} 
+\index{my\+F\+Elib\+::\+Standard\+Triangle@{my\+F\+Elib\+::\+Standard\+Triangle}!get\+\_\+shapes\+\_\+gradient@{get\+\_\+shapes\+\_\+gradient}}
+\index{get\+\_\+shapes\+\_\+gradient@{get\+\_\+shapes\+\_\+gradient}!my\+F\+Elib\+::\+Standard\+Triangle@{my\+F\+Elib\+::\+Standard\+Triangle}}
+\subsubsection{\texorpdfstring{get\+\_\+shapes\+\_\+gradient()}{get\_shapes\_gradient()}}
+{\footnotesize\ttfamily def my\+F\+Elib.\+Standard\+Triangle.\+get\+\_\+shapes\+\_\+gradient (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{xi }\end{DoxyParamCaption})}
+
+
+
+Get the shape functions gradient. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xi} & Local coordinate vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Matrix of shape function gradients 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+my\+F\+Elib.\+py\end{DoxyCompactItemize}

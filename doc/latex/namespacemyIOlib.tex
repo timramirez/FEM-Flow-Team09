@@ -1,0 +1,59 @@
+\hypertarget{namespacemyIOlib}{}\section{my\+I\+Olib Namespace Reference}
+\label{namespacemyIOlib}\index{my\+I\+Olib@{my\+I\+Olib}}
+
+
+This module contains a mesh reader and basic plotting function.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacemyIOlib_a32ff0df3100e4b492bdd062d83ecda0a}{read\+\_\+from\+\_\+txt}} (fname)
+\begin{DoxyCompactList}\small\item\em Mesh file reader. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacemyIOlib_abe296d601f511f73de654b5fb4137ae4}{plot\+\_\+solution}} (mesh, sol, outfile)
+\begin{DoxyCompactList}\small\item\em Plot the solution on a finite element mesh. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This module contains a mesh reader and basic plotting function. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacemyIOlib_abe296d601f511f73de654b5fb4137ae4}\label{namespacemyIOlib_abe296d601f511f73de654b5fb4137ae4}} 
+\index{my\+I\+Olib@{my\+I\+Olib}!plot\+\_\+solution@{plot\+\_\+solution}}
+\index{plot\+\_\+solution@{plot\+\_\+solution}!my\+I\+Olib@{my\+I\+Olib}}
+\subsubsection{\texorpdfstring{plot\+\_\+solution()}{plot\_solution()}}
+{\footnotesize\ttfamily def my\+I\+Olib.\+plot\+\_\+solution (\begin{DoxyParamCaption}\item[{}]{mesh,  }\item[{}]{sol,  }\item[{}]{outfile }\end{DoxyParamCaption})}
+
+
+
+Plot the solution on a finite element mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & Finite element mesh \\
+\hline
+{\em sol} & Solution vector \\
+\hline
+{\em outfile} & Name of the output file \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemyIOlib_a32ff0df3100e4b492bdd062d83ecda0a}\label{namespacemyIOlib_a32ff0df3100e4b492bdd062d83ecda0a}} 
+\index{my\+I\+Olib@{my\+I\+Olib}!read\+\_\+from\+\_\+txt@{read\+\_\+from\+\_\+txt}}
+\index{read\+\_\+from\+\_\+txt@{read\+\_\+from\+\_\+txt}!my\+I\+Olib@{my\+I\+Olib}}
+\subsubsection{\texorpdfstring{read\+\_\+from\+\_\+txt()}{read\_from\_txt()}}
+{\footnotesize\ttfamily def my\+I\+Olib.\+read\+\_\+from\+\_\+txt (\begin{DoxyParamCaption}\item[{}]{fname }\end{DoxyParamCaption})}
+
+
+
+Mesh file reader. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fname} & Name of the mesh file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Finite element mesh 
+
+Indices of constrained degrees of freedom 
+\end{DoxyReturn}
