@@ -1,5 +1,6 @@
 from myIOlib import read_from_txt, plot_solution
 from mymodelslib import PipeFlow
+from module1 import *
 
 #Define the model parameters
 meshfile = 'meshes/circle_coarse_p1.txt'
@@ -22,3 +23,9 @@ sol = linsys.solve()
 
 #Post-processing
 plot_solution( mesh, sol, outfile )
+
+##Calculating Cross Section
+calculate_cross_section(mesh)
+
+##Calculating Average Velocity
+calculate_average_velocity(mesh, sol)
