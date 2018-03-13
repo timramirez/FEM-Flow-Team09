@@ -2,6 +2,8 @@
 #  This module contains the linear system class
 
 import numpy
+import scipy.sparse
+from scipy.sparse.linalg import spsolve
 
 ## Linear system of equations
 class LinearSystem:
@@ -12,7 +14,7 @@ class LinearSystem:
     def __init__ ( self, size, zerocons ):
         self.__size = size
         self.__rhs = numpy.zeros( size )
-        self.__lhs = numpy.zeros( (size,size) )
+        self.__lhs = scipy.sparse.lil_matrix( (size,size) )
         self.__cons = numpy.zeros( size, dtype=bool )
         self.__cons[zerocons] = True
     
@@ -50,5 +52,5 @@ class LinearSystem:
         lhs_free = self.__lhs[numpy.ix_(~self.__cons,~self.__cons)]
         rhs_free = self.__rhs[~self.__cons]
         sol = numpy.zeros( len(self) )
-        sol[~self.__cons] = numpy.linalg.solve( lhs_free, rhs_free )
+        sol[~self.__cons] = spsolve( lhs_free.tocsr(), rhs_free )
         return sol

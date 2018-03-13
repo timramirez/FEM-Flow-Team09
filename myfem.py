@@ -1,9 +1,11 @@
-from myIOlib import read_from_txt, plot_solution
+from myIOlib import read_from_txt, plot_solution, getdata
 from mymodelslib import PipeFlow
-from module1 import *
+import time
+
+t0 = time.time()
 
 #Define the model parameters
-meshfile = 'meshes/circle_coarse_p1.txt'
+meshfile = 'meshes/circle_Wedge_p1_2.txt'
 outfile  = 'output/output.png'
 params   = { 'length'        : 1.,
              'pressure_drop' : 1.,
@@ -21,11 +23,12 @@ linsys = femodel.assemble()
 #Solve the system of equations    
 sol = linsys.solve()
 
-#Post-processing
+##Calculate geometry factor
+getdata(mesh, sol, cons, params)
+
+t1=time.time()
+total=t1-t0
+print("CPU time            [s]    : ", total)
+
+#Plot the sollution
 plot_solution( mesh, sol, outfile )
-
-##Calculating Cross Section
-calculate_cross_section(mesh)
-
-##Calculating Average Velocity
-calculate_average_velocity(mesh, sol)

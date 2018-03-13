@@ -2,6 +2,7 @@
 #  This module contains a mesh reader and basic plotting function
 
 from myFElib import *
+import numpy
 ## Mesh file reader
 #
 #  @param  fname Name of the mesh file
@@ -97,3 +98,9 @@ def plot_solution( mesh, sol, outfile ):
     plt.savefig( outfile )
     
     print( 'Output written to {}'.format( outfile ) )
+
+    ## Geometry Factor
+def getdata(mesh, sol, cons, params):
+    geometry_factor(mesh, sol, cons, params)
+    
+    
