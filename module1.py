@@ -11,7 +11,8 @@ Created on Wed Mar  7 12:00:32 2018
 import numpy as np
 from scipy.integrate import dblquad
 from myLinAlglib import LinearSystem
-from myFElib import *
+#from myFElib import *
+import math
 
 
 ## https://math.stackexchange.com/questions/516219/finding-out-the-area-of-a-triangle-if-the-coordinates-of-the-three-vertices-are
@@ -30,30 +31,129 @@ def calculate_cross_section(mesh):
                             X.item(C.item(i-1,0),0)*X.item(C.item(i-1,2),1) -
                             X.item(C.item(i-1,2),0)*X.item(C.item(i-1,1),1) -
                             X.item(C.item(i-1,1),0)*X.item(C.item(i-1,0),1)     )
-        print(Area_i)
         Area+=Area_i
     
-    print("cross-sec. area [m^2] : ", Area)
     return Area
 
-## Calculate Average velocity
+# Calculate Average velocity
 def calculate_average_velocity(mesh, sol):
     X = mesh.get_nodal_coordinates()
     A = calculate_cross_section(mesh)
-    C = mesh.get_connectivity()
-        
-    u_sum = 0
-    for i in range(0, len(C)-1):
-        xi, w = StandardTriangle.get_integration_scheme ( self, 'gauss', 3)
-        print("Intigration points:", xi)
-        u_i = 0
-        for j in range(0, get_nr_of_nodes - 1):
-            N_j = get_shapes ( xi(j) )
-            n_j = #Obtain the nodal indices of the nodes in the current element (might be better to do outside loop)
-            u_i_j = [ ] #Insert value of speed in nodes 0, 1 and 2
-            u_i += np.dot(N_j, u_i_je)           
-        u_sum += u_i
 
-#    u=(1/A)*u_sum
-#    print("velocity average [m/s] : ", u)
-#    print(sol)
+    u_sum = 0
+    i = 0
+    for element in mesh:
+        xis, ws = element.get_integration_scheme( 'gauss', 3 )   
+        C = mesh.get_connectivity() 
+        n_j =  C[i,:]
+        i+=1
+
+        u_i = 0
+        for xi, w in zip( xis, ws ):
+            N_j = element.get_shapes( xi ) 
+            if len(N_j) == 3:
+                u_i_j = [sol.item(n_j[0]) , sol.item(n_j[1]) , sol.item(n_j[2])]
+            elif len(N_j) == 6:
+                u_i_j = [sol.item(n_j[0]) , sol.item(n_j[1]) , sol.item(n_j[2]), sol.item(n_j[3]) , sol.item(n_j[4]) , sol.item(n_j[5])]
+            u_i += w * np.dot(N_j, u_i_j)           
+        u_sum += u_i
+    
+    u=(1/A)*u_sum
+
+    return u
+    
+## Determine Boundary Node Values
+def Boundary_Nodes(mesh, cons):
+    C = mesh.get_connectivity()
+    B = cons
+    
+    Boundary_Node=[]
+    for i in range(0, len(C)):
+        boolarr = np.in1d(C[i,:],B)
+        if np.sum(boolarr) > 1:
+            position = np.where(np.in1d(C[i,:],B))
+            place = position[0]
+            Boundary_Node.append([C.item(i,place[0]) , C.item(i,place[1])])
+
+    return Boundary_Node
+
+
+## Calculate circumference
+def calculate_circumference(mesh, cons):
+    X = mesh.get_nodal_coordinates()
+    Z = np.array(Boundary_Nodes(mesh, cons))
+
+    length=0
+    for i in range(0, len(Z)):
+        length_i = math.sqrt(( X.item(Z[i,0],0) - X.item(Z[i,1],0))**2 + 
+                            ( X.item(Z[i,0],1) - X.item(Z[i,1],1))**2  )
+        length += length_i
+        
+    return length
+
+## Calculate the normal vector on the element
+def calculate_normal(mesh, cons, nodes):
+    X = mesh.get_nodal_coordinates()    
+
+    dx = X.item(nodes[0], 0) - X.item(nodes[1], 0)
+    dy = X.item(nodes[0], 1) - X.item(nodes[1], 1)
+        
+    if (X.item(nodes[0], 0) > 0 and X.item(nodes[1], 0) > 0):
+        if np.sign([dy]) > 0:
+            norm = [dy, -dx]
+        else:
+            norm = [-dy, dx]
+    elif (X.item(nodes[0], 0) < 0 and X.item(nodes[1], 0) < 0):
+        if np.sign([dy]) < 0:
+            norm = [dy, -dx]
+        else:
+            norm = [-dy, dx]        
+    elif (X.item(nodes[0], 1) > 0 and X.item(nodes[1], 1) > 0):
+        if np.sign([dx]) < 0:
+            norm = [dy, -dx]
+        else:
+            norm = [-dy, dx]        
+    elif X.item(nodes[0], 1) < 0 and X.item(nodes[1], 1) < 0:
+        if np.sign([dx]) > 0:
+            norm = [dy, -dx]
+        else:
+            norm = [-dy, dx]
+    else:
+        norm = [0, 0]
+    
+    return norm
+
+
+## Calculate the cross sectional area
+def cross_sectional_area(mesh, cons):
+    X = mesh.get_nodal_coordinates()
+    Z = np.array(Boundary_Nodes(mesh, cons))
+    
+    Ac = 0
+    for i in range(0, len(Z)):
+        norm = calculate_normal(mesh, cons, Z[i, 0:2])
+        coor = (X[Z[i, 0], 0:2] + X[Z[i, 1], 0:2]) / 2
+        Ac_i = np.dot(coor, norm)  
+        Ac += Ac_i
+    
+    Ac = Ac/2
+    
+    return Ac
+    
+    ## Geometry Factor
+def geometry_factor(mesh, sol, cons, params):
+    u = calculate_average_velocity(mesh, sol)
+    lc = calculate_circumference(mesh, cons)
+    Ac_old = calculate_cross_section(mesh)
+    Ac_new = cross_sectional_area(mesh, cons)
+
+    mu    = params['viscosity']
+    s     = params['pressure_drop']/params['length']
+
+    gm = (32/u)*((Ac_new/lc)**2)*(s/mu)
+
+    print("cross-sec. area old     [m^2] : ", Ac_old)
+    print("cross-sec. area new     [m^2] : ", Ac_new)
+    print("velocity average     [m/s] : ", u)
+    print("circumference        [m]   : ", lc)
+    print("geometry factor      [-]   : ", gm)

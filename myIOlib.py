@@ -83,9 +83,15 @@ def plot_solution( mesh, sol, outfile ):
     #Create the Triangulation
     X = mesh.get_nodal_coordinates()
     C = mesh.get_connectivity()
+    D = numpy.zeros((len(C), 3)) ##TODO rename variable
     
-    triang = tri.Triangulation( X[:,0], X[:,1], C )
+    if len(C[0,:]) == 6:
+        for i in range( len(C) ):
+            D[i,:] = [C[i, 0], C[i, 2], C[i, 5]]
     
+        triang = tri.Triangulation( X[:,0], X[:,1], D )
+    else:
+        triang = tri.Triangulation( X[:,0], X[:,1], C )    
     #Plotting
     plt.figure()
     plt.tripcolor(triang, sol, edgecolors='k' )
