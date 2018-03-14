@@ -5,7 +5,7 @@ import time
 t0 = time.time()
 
 #Define the model parameters
-meshfile = 'meshes/circle_Wedge_p1_2.txt'
+meshfile = 'meshes/circle_coarse_p1.txt'
 outfile  = 'output/output.png'
 params   = { 'length'        : 1.,
              'pressure_drop' : 1.,
@@ -32,3 +32,4 @@ print("CPU time            [s]    : ", total)
 
 #Plot the sollution
 plot_solution( mesh, sol, outfile )
+## TODO fix for quadratic elements

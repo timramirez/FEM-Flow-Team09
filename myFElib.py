@@ -56,7 +56,7 @@ class StandardTriangle:
                  }
 
     ## Number of nodes
-    __nnodes = 3#6 
+    __nnodes = 3#6 ##
     
     ## Length function
     def __len__ ( self ):
@@ -73,12 +73,12 @@ class StandardTriangle:
         ## Linear 
         return np.array([1-xi[0]-xi[1],xi[0],xi[1]])
 #        ## Quadratic
-#        return np.array([(1 - xi[0] - xi[1])*(2*(1 - xi[0] - xi[1]) - 1), 
-#                            4*(1 - xi[0] - xi[1])*xi[0], 
+#        return np.array([(1 - 3*(xi[0]+xi[1]) + 4*xi[0]*xi[1] + 2*(xi[0]**2 + xi[1]**2)), 
+#                            (4*xi[0] - 4*xi[0]**2 - 4*xi[1]*xi[0]), 
 #                            xi[0]*(2*xi[0] - 1), 
+#                            4*(1 - xi[0] - xi[1])*xi[1], 
 #                            4*xi[0]*xi[1], 
-#                            xi[1]*(2*xi[1] - 1), 
-#                            4*(1 - xi[0] - xi[1])*xi[1]])  
+#                            xi[1]*(2*xi[1] - 1)])  
     
     ## Get the shape functions gradient
     #  @param  xi Local coordinate vector
@@ -88,11 +88,11 @@ class StandardTriangle:
         return np.array([[-1.,-1.], [ 1., 0.], [ 0., 1.]])
 #        ## Quadratic
 #        return np.array([[-3 + 4*(xi[0] + xi[1]), -3 + 4*(xi[0] + xi[1])],
-#                            [-8*xi[0] - 4*xi[1], -4*xi[0]],
-#                            [4*xi[0], 0],
+#                            [-8*xi[0] - 4*xi[1] + 4, -4*xi[0]],
+#                            [4*xi[0] - 1, 0],
+#                            [-4*xi[1], 4 -8*xi[1] - 4*xi[0]],
 #                            [4*xi[1], 4*xi[0]],
-#                            [0, 4*xi[1]],
-#                            [-4*xi[1], -8*xi[1] - 4*xi[0]]])  
+#                            [0, 4*xi[1] - 1]])  
 
     ## Get the integration scheme
     #  @param  name The type of integration scheme (e.g. 'gauss')
@@ -255,8 +255,7 @@ def calculate_cross_section(mesh):
     return Area
 
 # Calculate Average velocity
-def calculate_average_velocity(mesh, sol, cons):
-    A = cross_sectional_area(mesh, cons)
+def calculate_average_velocity(mesh, sol, cons, A):
     C = mesh.get_connectivity() 
     u_sum = 0
     i = 0
@@ -278,6 +277,18 @@ def calculate_average_velocity(mesh, sol, cons):
     
     u=(1/A)*u_sum
 
+    return u
+
+def calculate_average_velocity_a(mesh, sol, cons):
+    A = calculate_cross_section(mesh)
+    
+    u = calculate_average_velocity(mesh, sol, cons, A)
+    return u
+
+def calculate_average_velocity_b(mesh, sol, cons):
+    A = cross_sectional_area(mesh, cons)
+    
+    u = calculate_average_velocity(mesh, sol, cons, A)
     return u
     
 ## Determine Boundary Node Values
@@ -302,12 +313,31 @@ def Boundary_Nodes(mesh, cons):
 def calculate_circumference(mesh, cons):
     X = mesh.get_nodal_coordinates()
     Z = np.array(Boundary_Nodes(mesh, cons))
-    length=0
+    
+    length = 0
     for i in range(0, len(Z)):
-        length_i = math.sqrt(( X.item(Z[i,0],0) - X.item(Z[i,1],0))**2 + 
-                            ( X.item(Z[i,0],1) - X.item(Z[i,1],1))**2  )
-        length += length_i
-        
+        if len(Z[0,:]) == 2: 
+            length_i = calculate_length(X, [Z[i,0], Z[i,1]])
+            length += length_i
+        elif len(Z[0,:]) == 3:
+            length_1 = calculate_length(X, [Z[i,0], Z[i,1]])
+            length_2 = calculate_length(X, [Z[i,1], Z[i,2]])
+            length_3 = calculate_length(X, [Z[i,0], Z[i,2]])
+            if length_1 > length_2 and length_1 > length_3:
+                length_i = length_2 + length_3
+                length += length_i
+            elif length_2 > length_1 and length_2 > length_3:
+                length_i = length_1 + length_3
+                length += length_i
+            elif length_3 > length_1 and length_3 > length_2:
+                length_i = length_1 + length_2
+                length += length_i
+    return length
+
+## Calculate length between two points
+def calculate_length(X, nodes):
+    length = math.sqrt(( X.item(nodes[0],0) - X.item(nodes[1],0))**2 + 
+                            ( X.item(nodes[0],1) - X.item(nodes[1],1))**2  )
     return length
 
 ## Calculate the normal vector on the element
@@ -316,30 +346,8 @@ def calculate_normal(mesh, nodes):
 
     dx = X.item(nodes[0], 0) - X.item(nodes[1], 0)
     dy = X.item(nodes[0], 1) - X.item(nodes[1], 1)
-        
-    if (X.item(nodes[0], 0) > 0 and X.item(nodes[1], 0) > 0):
-        if np.sign([dy]) > 0:
-            norm = [dy, -dx]
-        else:
-            norm = [-dy, dx]
-    elif (X.item(nodes[0], 0) < 0 and X.item(nodes[1], 0) < 0):
-        if np.sign([dy]) < 0:
-            norm = [dy, -dx]
-        else:
-            norm = [-dy, dx]        
-    elif (X.item(nodes[0], 1) > 0 and X.item(nodes[1], 1) > 0):
-        if np.sign([dx]) < 0:
-            norm = [dy, -dx]
-        else:
-            norm = [-dy, dx]        
-    elif X.item(nodes[0], 1) < 0 and X.item(nodes[1], 1) < 0:
-        if np.sign([dx]) > 0:
-            norm = [dy, -dx]
-        else:
-            norm = [-dy, dx]
-    else:
-        norm = [0, 0]
     
+    norm = [-dy, dx]
     return norm
 
 
@@ -347,32 +355,52 @@ def calculate_normal(mesh, nodes):
 def cross_sectional_area(mesh, cons):
     X = mesh.get_nodal_coordinates()
     Z = np.array(Boundary_Nodes(mesh, cons))
-    print("Nodal coordinates:",X)
-    print("Boundary nodes",Z)
     Ac = 0
     for i in range(0, len(Z)):
-        norm = calculate_normal(mesh, Z[i, :])
-        coor = (X[Z[i, 0], :] + X[Z[i, 1], :]) / 2
-        Ac_i = np.dot(coor, norm)  
-        Ac += Ac_i
-    
+        if len(Z[0,:]) == 2:
+            Ac_i = cross_sectional_area_section(mesh, [Z[i,0], Z[i,1]])
+            Ac += Ac_i
+        elif len(Z[0,:]) == 3:
+            length_1 = calculate_length(X, [Z[i,0], Z[i,1]])
+            length_2 = calculate_length(X, [Z[i,1], Z[i,2]])
+            length_3 = calculate_length(X, [Z[i,0], Z[i,2]])
+            if length_1 > length_2 and length_1 > length_3:
+                Ac_i = cross_sectional_area_section(mesh, [Z[i,1], Z[i,2]]) + cross_sectional_area_section(mesh, [Z[i,0], Z[i,2]])
+                Ac += Ac_i
+            elif length_2 > length_1 and length_2 > length_3:
+                Ac_i = cross_sectional_area_section(mesh, [Z[i,0], Z[i,1]]) + cross_sectional_area_section(mesh, [Z[i,0], Z[i,2]])
+                Ac += Ac_i
+            elif length_3 > length_1 and length_3 > length_2:
+                Ac_i = cross_sectional_area_section(mesh, [Z[i,0], Z[i,1]]) + cross_sectional_area_section(mesh, [Z[i,1], Z[i,2]])
+                Ac += Ac_i
+   
     Ac = Ac/2
-    
     return Ac
+
+## Calculate cross sectional area of part of a quadratic element
+def cross_sectional_area_section(mesh, nodes):
+    X = mesh.get_nodal_coordinates()
+    
+    norm = calculate_normal(mesh, [nodes[0], nodes[1]])
+    coor = (X[nodes[0], :] + X[nodes[1], :]) / 2
+    Ac = abs(np.dot(coor, norm))
+    return Ac
+    
      ## Geometry Factor
-def geometry_factor(mesh, sol, cons, params):   
-    u = calculate_average_velocity(mesh, sol, cons)
+def geometry_factor(mesh, sol, cons, params):
+    u_a = calculate_average_velocity_a(mesh, sol, cons)
+    u_b = calculate_average_velocity_b(mesh, sol, cons)
     lc = calculate_circumference(mesh, cons)
-    Ac_old = calculate_cross_section(mesh)
-    Ac_new = cross_sectional_area(mesh, cons)
+    Ac_a = calculate_cross_section(mesh)
+    Ac_b = cross_sectional_area(mesh, cons)
 
     mu    = params['viscosity']
     s     = params['pressure_drop']/params['length']
 
-    gm = (32/u)*((Ac_new/lc)**2)*(s/mu)
+    gm = (32/u_b)*((Ac_b/lc)**2)*(s/mu)
 
-    print("cross-sec. area old     [m^2] : ", Ac_old)
-    print("cross-sec. area new     [m^2] : ", Ac_new)
-    print("velocity average     [m/s] : ", u)
+    print("cross-sec. area old     [m^2] : ", Ac_a)
+    print("cross-sec. area new     [m^2] : ", Ac_b)
+    print("velocity average     [m/s] : ", u_b)
     print("circumference        [m]   : ", lc)
     print("geometry factor      [-]   : ", gm)
