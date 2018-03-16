@@ -83,15 +83,19 @@ def plot_solution( mesh, sol, outfile ):
     #Create the Triangulation
     X = mesh.get_nodal_coordinates()
     C = mesh.get_connectivity()
-    D = numpy.zeros((len(C), 3)) ##TODO rename variable
     
-    if len(C[0,:]) == 6:
+    if len(C[0,:]) == 3:
+        triang = tri.Triangulation( X[:,0], X[:,1], C )
+    elif len(C[0,:]) ==6:
+        D = numpy.zeros((4*len(C), 3)) 
         for i in range( len(C) ):
-            D[i,:] = [C[i, 0], C[i, 2], C[i, 5]]
+            D[4*i,:]   = [C[i, 0], C[i, 1], C[i, 3]]
+            D[4*i+1,:] = [C[i, 1], C[i, 2], C[i, 4]]
+            D[4*i+2,:] = [C[i, 1], C[i, 3], C[i, 4]]
+            D[4*i+3,:] = [C[i, 3], C[i, 4], C[i, 5]]
     
-        triang = tri.Triangulation( X[:,0], X[:,1], D )
-    else:
-        triang = tri.Triangulation( X[:,0], X[:,1], C )    
+            triang = tri.Triangulation( X[:,0], X[:,1], D )
+    
     #Plotting
     plt.figure()
     plt.tripcolor(triang, sol, edgecolors='k' )
@@ -105,8 +109,5 @@ def plot_solution( mesh, sol, outfile ):
     
     print( 'Output written to {}'.format( outfile ) )
 
-    ## Geometry Factor
-def getdata(mesh, sol, cons, params):
-    geometry_factor(mesh, sol, cons, params)
     
     

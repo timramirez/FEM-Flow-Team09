@@ -1,4 +1,5 @@
-from myIOlib import read_from_txt, plot_solution, getdata
+from myIOlib import read_from_txt, plot_solution
+from myFElib import *
 from mymodelslib import PipeFlow
 import time
 
@@ -24,7 +25,7 @@ linsys = femodel.assemble()
 sol = linsys.solve()
 
 ##Calculate geometry factor
-getdata(mesh, sol, cons, params)
+process_data(mesh, sol, cons, params)
 
 t1=time.time()
 total=t1-t0
@@ -32,4 +33,3 @@ print("CPU time            [s]    : ", total)
 
 #Plot the sollution
 plot_solution( mesh, sol, outfile )
-## TODO fix for quadratic elements

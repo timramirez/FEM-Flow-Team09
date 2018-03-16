@@ -56,7 +56,10 @@ class StandardTriangle:
                  }
 
     ## Number of nodes
-    __nnodes = 3#6 ##
+    ## Linear
+    __nnodes = 3
+#    ## Quadratic
+#    __nnodes = 6 
     
     ## Length function
     def __len__ ( self ):
@@ -281,15 +284,16 @@ def calculate_average_velocity(mesh, sol, cons, A):
 
 def calculate_average_velocity_a(mesh, sol, cons):
     A = calculate_cross_section(mesh)
-    
+    print("cross-sec. area a     [m^2] : ", A)
     u = calculate_average_velocity(mesh, sol, cons, A)
-    return u
+    print("velocity average a   [m/s] : ", u)
 
 def calculate_average_velocity_b(mesh, sol, cons):
     A = cross_sectional_area(mesh, cons)
-    
+    print("cross-sec. area b     [m^2] : ", A)
     u = calculate_average_velocity(mesh, sol, cons, A)
-    return u
+    print("velocity average b   [m/s] : ", u)
+    return A, u
     
 ## Determine Boundary Node Values
 def Boundary_Nodes(mesh, cons):
@@ -332,6 +336,8 @@ def calculate_circumference(mesh, cons):
             elif length_3 > length_1 and length_3 > length_2:
                 length_i = length_1 + length_2
                 length += length_i
+    
+    print("circumference        [m]   : ", length)
     return length
 
 ## Calculate length between two points
@@ -387,20 +393,17 @@ def cross_sectional_area_section(mesh, nodes):
     return Ac
     
      ## Geometry Factor
-def geometry_factor(mesh, sol, cons, params):
-    u_a = calculate_average_velocity_a(mesh, sol, cons)
-    u_b = calculate_average_velocity_b(mesh, sol, cons)
-    lc = calculate_circumference(mesh, cons)
-    Ac_a = calculate_cross_section(mesh)
-    Ac_b = cross_sectional_area(mesh, cons)
-
+def geometry_factor(u_b, Ac_b, lc, params):
     mu    = params['viscosity']
     s     = params['pressure_drop']/params['length']
 
-    gm = (32/u_b)*((Ac_b/lc)**2)*(s/mu)
+    gf = (32/u_b)*((Ac_b/lc)**2)*(s/mu)
 
-    print("cross-sec. area old     [m^2] : ", Ac_a)
-    print("cross-sec. area new     [m^2] : ", Ac_b)
-    print("velocity average     [m/s] : ", u_b)
-    print("circumference        [m]   : ", lc)
-    print("geometry factor      [-]   : ", gm)
+    print("geometry factor      [-]   : ", gf)
+    
+    ## Process the data
+def process_data(mesh, sol, cons, params):
+    calculate_average_velocity_a(mesh, sol, cons)
+    lc = calculate_circumference(mesh, cons)
+    Ac_b, u_b = calculate_average_velocity_b(mesh, sol, cons)
+    geometry_factor(u_b, Ac_b, lc, params)
